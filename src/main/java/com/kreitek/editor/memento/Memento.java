@@ -1,4 +1,4 @@
-package com.kreitek.editor;
+package com.kreitek.editor.memento;
 
 import java.util.Map;
 import java.util.Objects;

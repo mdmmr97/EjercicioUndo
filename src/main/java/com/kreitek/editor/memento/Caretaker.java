@@ -1,4 +1,4 @@
-package com.kreitek.editor;
+package com.kreitek.editor.memento;
 
 import java.util.ArrayList;
 import java.util.List;
