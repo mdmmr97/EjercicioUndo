@@ -1,8 +1,12 @@
 package com.kreitek.editor;
 
 import com.kreitek.editor.commands.CommandFactory;
+import com.kreitek.editor.memento.Caretaker;
+import com.kreitek.editor.memento.Memento;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 public class ConsoleEditor implements Editor {
@@ -17,7 +21,8 @@ public class ConsoleEditor implements Editor {
     public static final String TEXT_WHITE = "\u001B[37m";
 
     private final CommandFactory commandFactory = new CommandFactory();
-    private ArrayList<String> documentLines = new ArrayList<String>();
+    private static ArrayList<String> documentLines = new ArrayList<String>();
+    private final Caretaker caretaker = new Caretaker();
 
     @Override
     public void run() {
@@ -26,7 +31,7 @@ public class ConsoleEditor implements Editor {
             String commandLine = waitForNewCommand();
             try {
                 Command command = commandFactory.getCommand(commandLine);
-                command.execute(documentLines);
+                command.execute(documentLines, caretaker);
             } catch (BadCommandException e) {
                 printErrorToConsole("Bad command");
             } catch (ExitException e) {
@@ -82,6 +87,11 @@ public class ConsoleEditor implements Editor {
 
     private void printToConsole(String message) {
         System.out.print(message);
+    }
+    public static Memento getState(){
+        Map<String, Object> state = new HashMap<>();
+        state.put("documentLines",new ArrayList<String> (documentLines));
+        return new Memento(state);
     }
 
 }
